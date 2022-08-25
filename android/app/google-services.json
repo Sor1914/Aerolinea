@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "691075776699",
+    "project_id": "dbaerolinea",
+    "storage_bucket": "dbaerolinea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691075776699:android:45ee72cff1cafe2b9fe99e",
+        "android_client_info": {
+          "package_name": "com.sor.aerolinea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691075776699-1nle13f1osqnsghc6f81jq4ht27n27n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE_lbZCAcJmRZm2AEXDCq4P0PT7URz4bc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691075776699-1nle13f1osqnsghc6f81jq4ht27n27n3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
