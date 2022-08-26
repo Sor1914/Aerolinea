@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         .copyWith(color: Colors.white),
                   )),
               const SizedBox(
-                height: 100,
+                height: 75,
               ),
               TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
+                    icon: const Icon(Icons.email),
                     hintText: 'Correo',
                   )),
               const SizedBox(
@@ -84,10 +85,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     password = value;
                     //Do something with the user input.
                   },
-                  decoration:
-                      kTextFieldDecoration.copyWith(hintText: 'Contraseña')),
+                  decoration: kTextFieldDecoration.copyWith(
+                      icon: const Icon(Icons.password),
+                      hintText: 'Contraseña')),
               const SizedBox(
-                height: 24.0,
+                height: 10.0,
               ),
               RoundedButton(
                   colour: Colors.lightBlueAccent,
@@ -116,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushNamed(context, 'registration_screen');
                   }),
               RoundedButton(
-                  colour: Color.fromARGB(255, 184, 184, 184),
+                  colour: const Color.fromARGB(255, 184, 184, 184),
                   title: 'Invitado',
                   onPressed: () {
                     Navigator.pushNamed(context, 'registration_screen');
