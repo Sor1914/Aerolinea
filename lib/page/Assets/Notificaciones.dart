@@ -3,7 +3,7 @@ import 'package:flushbar/flushbar.dart';
 
 void notificacion(
     BuildContext context, String titulo, String mensaje, int tipo) {
-  if (tipo == 0) {
+  if (tipo == 1) {
     Flushbar(
       title: titulo,
       message: mensaje,
@@ -15,7 +15,7 @@ void notificacion(
       leftBarIndicatorColor: Color.fromARGB(255, 228, 34, 34),
       duration: Duration(seconds: 7),
     ).show(context);
-  } else if (tipo == 1) {
+  } else if (tipo == 0) {
     Flushbar(
       title: titulo,
       message: mensaje,
@@ -31,10 +31,13 @@ void notificacion(
 }
 
 void AlertaUnBoton(
-    BuildContext context, String titulo, String mensaje, String boton) {
+    BuildContext context, String titulo, String mensaje, String boton,
+    {required Function pAccion}) {
   Widget okButton = TextButton(
     child: Text(boton),
-    onPressed: () {},
+    onPressed: () {
+      pAccion();
+    },
   );
 
   AlertDialog alert = AlertDialog(

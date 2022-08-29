@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter/material.dart';
 import 'package:aerolinea/page/Assets/RoundedButton.dart';
+import 'package:aerolinea/page/Assets/Notificaciones.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password
 
@@ -103,13 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           email: email, password: password);
                       if (user != null) {
                         Navigator.pushNamed(context, 'home_screen');
+                        notificacion(context, 'Inicio de Sesión Correcto',
+                            'Bienvenido', 0);
                       }
                     } catch (e) {
-                      print(e);
+                      notificacion(context, 'Error Inicio de Sesión',
+                          'Los datos no son correctos', 1);
                     }
-                    setState(() {
-                      showSpinner = false;
-                    });
+                    setState(() {});
                   }),
               RoundedButton(
                   colour: Colors.blueAccent,

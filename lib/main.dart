@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aerolinea/page/home_screen.dart';
-import 'package:aerolinea/page/Login/signup_screen.dart';
-import 'package:aerolinea/page/Login/login_screen.dart';
+import 'package:aerolinea/page/Login/RegistroVista.dart';
+import 'package:aerolinea/page/Login/inicioSesionVista.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
