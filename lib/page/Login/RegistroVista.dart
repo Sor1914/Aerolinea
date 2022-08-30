@@ -294,12 +294,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         colour: Color.fromARGB(255, 58, 108, 37),
                         title: validar,
                         onPressed: () async {
-                          bool correo = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(email!);
-                          bool contrasenia = RegExp(
-                                  r"^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$")
-                              .hasMatch(password!);
+                          bool correo = false;
+                          bool contrasenia = false;
+                          if (email != null) {
+                            correo = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(email!);
+                          } else {
+                            correo = false;
+                          }
+
+                          if (password != null) {
+                            contrasenia = RegExp(
+                                    r"^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$")
+                                .hasMatch(password!);
+                          } else {
+                            contrasenia = false;
+                          }
+
                           if (pasaporte == null ||
                               pasaporte == '' ||
                               email == null ||
