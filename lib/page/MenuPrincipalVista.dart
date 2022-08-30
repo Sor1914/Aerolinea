@@ -11,11 +11,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void initState() {
     super.initState();
-    getCurrentUser();
+    //getCurrentUser();
   }
 
   //using this function you can use the credentials of the user
-  void getCurrentUser() async {
+  /*void getCurrentUser() async {
     try {
       final user = await _auth.currentUser;
       if (user != null) {
@@ -24,6 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       print(e);
     }
+  }*/
+
+  String prueba() {
+    final user = _auth.currentUser;
+    return user.email.toString();
   }
 
   @override
@@ -46,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: Text(
-          "Welcome User",
+          "Welcome User" + prueba().toString(),
           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
         ),
       ),
