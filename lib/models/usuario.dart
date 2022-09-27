@@ -11,7 +11,6 @@ class Usuario {
   String? direccion;
   String? fechaNacimiento;
   String? nacionalidad;
-  String? rol;
   String? estado;
 
   Usuario(

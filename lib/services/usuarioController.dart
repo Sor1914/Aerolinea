@@ -41,7 +41,6 @@ class Usuarios {
       "direccion": direccion,
       "fechaNacimiento": fechaNacimiento,
       "nacionalidad": nacionalidad,
-      "rol": rol,
       "usuarioCrea": usuarioCrea,
       "fechaCrea": fechaCrea,
       "usuarioMod": usuarioMod,
