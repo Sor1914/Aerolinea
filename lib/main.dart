@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:aerolinea/page/MenuPrincipalVista.dart';
-import 'package:aerolinea/page/Login/RegistroVista.dart';
-import 'package:aerolinea/page/Login/inicioSesionVista.dart';
-import 'package:aerolinea/page/Aerolinea/AgregarAvion.dart';
-import 'package:aerolinea/page/Aerolinea/AgregarAerolinea.dart';
+import 'package:aerolinea/src/ui/MenuPrincipalVista.dart';
+import 'package:aerolinea/src/ui/RegistroVista.dart';
+import 'package:aerolinea/src/ui/inicioSesionVista.dart';
+import 'package:aerolinea/src/ui/AgregarAvion.dart';
+import 'package:aerolinea/src/ui/AgregarAerolinea.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

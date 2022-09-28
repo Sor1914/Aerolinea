@@ -1,15 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:ffi';
-import 'package:aerolinea/services/usuarioController.dart';
-import 'package:aerolinea/models/usuario.dart';
-import 'package:aerolinea/services/usuarioController.dart';
+import 'package:aerolinea/src/resources/usuarioController.dart';
+import 'package:aerolinea/src/models/usuario.dart';
+import 'package:aerolinea/src/resources/usuarioController.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:aerolinea/page/Assets/RoundedButton.dart';
-import 'package:aerolinea/page/Assets/Notificaciones.dart';
+import 'package:aerolinea/src/Assets/RoundedButton.dart';
+import 'package:aerolinea/src/Assets/Notificaciones.dart';
 import 'package:intl/intl.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password

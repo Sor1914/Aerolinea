@@ -3,8 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter/material.dart';
-import 'package:aerolinea/page/Assets/RoundedButton.dart';
-import 'package:aerolinea/page/Assets/Notificaciones.dart';
+import 'package:aerolinea/src/Assets/RoundedButton.dart';
+import 'package:aerolinea/src/Assets/Notificaciones.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password
 

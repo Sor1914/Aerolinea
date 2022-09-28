@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:aerolinea/page/Assets/Notificaciones.dart';
-import 'package:aerolinea/services/aerolineaController.dart';
+import 'package:aerolinea/src/Assets/Notificaciones.dart';
+import 'package:aerolinea/src/resources//aerolineaController.dart';
 
 class AgregarAerolinea extends StatefulWidget {
   @override
