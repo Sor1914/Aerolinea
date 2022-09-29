@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aerolinea/src/ui/MenuPrincipalVista.dart';
 import 'package:aerolinea/src/ui/RegistroVista.dart';
-import 'package:aerolinea/src/ui/inicioSesionVista.dart';
+import 'package:aerolinea/src/ui/inicioSesion.dart';
 import 'package:aerolinea/src/ui/AgregarAvion.dart';
 import 'package:aerolinea/src/ui/AgregarAerolinea.dart';
 
