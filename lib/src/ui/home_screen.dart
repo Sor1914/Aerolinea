@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../blocs/authentication bloc/authentication_bloc.dart';
+import '../blocs/authentication bloc/authentication_event.dart';
 
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
@@ -158,6 +162,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     mostrarOcultar('Usuarios');
                     Navigator.pop(context);
+                  });
+                },
+              ),
+            ),
+          ),
+          Visibility(
+            visible: true,
+            child: Card(
+              child: ListTile(
+                leading: const Icon(Icons.exit_to_app),
+                title: const Text('Cerrar sesión'),
+                onTap: () {
+                  setState(() {
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(LoggedOut());
                   });
                 },
               ),

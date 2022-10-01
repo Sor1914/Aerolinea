@@ -1,21 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:aerolinea/src/blocs/authentication%20bloc/authentication_bloc.dart';
 import 'package:aerolinea/src/blocs/authentication%20bloc/authentication_event.dart';
 import 'package:aerolinea/src/blocs/authentication%20bloc/authentication_state.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
+import 'package:aerolinea/src/ui/InicioSesion.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:aerolinea/src/ui/MenuPrincipalVista.dart';
+import 'package:aerolinea/src/ui/home_screen.dart';
 import 'package:aerolinea/src/ui/RegistroVista.dart';
-import 'package:aerolinea/src/ui/inicioSesion.dart';
 import 'package:aerolinea/src/ui/AgregarAvion.dart';
 import 'package:aerolinea/src/ui/AgregarAerolinea.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:aerolinea/src/blocs/simple_bloc_observer.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final UserRepository userRepository = UserRepository();
+
+  await Firebase.initializeApp();
+
+  Bloc.observer = SimpleBlocObserver();
+  UserRepository userRepository = UserRepository();
+
   runApp(BlocProvider(
     create: (context) =>
         AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
@@ -35,7 +43,16 @@ class App extends StatelessWidget {
     return MaterialApp(
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          return Container();
+          if (state is Uninitialized) {
+            //return LoginScreen();
+          }
+          if (state is Authenticated) {
+            return HomeScreen();
+          }
+          if (state is Unauthenticated) {
+            return LoginScreen();
+          }
+          return LoginScreen();
         },
       ),
     );
