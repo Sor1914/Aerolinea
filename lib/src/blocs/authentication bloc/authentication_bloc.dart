@@ -17,29 +17,29 @@ class AuthenticationBloc
     on<LoggedOut>(_loggedOutToState);
   }
 
-  Stream<AuthenticationState> _appStartedTostate(
-      appStarted, Emitter<AuthenticationState> emit) async* {
+  Future<void> _appStartedTostate(
+      appStarted, Emitter<AuthenticationState> emit) async {
     try {
       final isSignedIn = await _userRepository.isSignedIn();
       if (isSignedIn) {
         final user = await _userRepository.getUser();
-        yield Authenticated(user);
+        emit(Authenticated(user));
       } else {
-        yield Unauthenticated();
+        emit(Unauthenticated());
       }
     } catch (_) {
-      yield Unauthenticated();
+      emit(Unauthenticated());
     }
   }
 
-  Stream<AuthenticationState> _loggedInToState(
-      loggedIn, Emitter<AuthenticationState> emit) async* {
-    yield Authenticated(await _userRepository.getUser());
+  Future<void> _loggedInToState(
+      loggedIn, Emitter<AuthenticationState> emit) async {
+    emit(Authenticated(await _userRepository.getUser()));
   }
 
-  Stream<AuthenticationState> _loggedOutToState(
-      loggedOut, Emitter<AuthenticationState> emit) async* {
-    yield Unauthenticated();
+  Future<void> _loggedOutToState(
+      loggedOut, Emitter<AuthenticationState> emit) async {
+    emit(Unauthenticated());
     _userRepository.signOut();
   }
 }
