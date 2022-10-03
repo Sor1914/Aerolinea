@@ -5,7 +5,7 @@ import 'package:aerolinea/src/blocs/authentication%20bloc/authentication_bloc.da
 import 'package:aerolinea/src/blocs/authentication%20bloc/authentication_event.dart';
 import 'package:aerolinea/src/blocs/authentication%20bloc/authentication_state.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
-import 'package:aerolinea/src/ui/login_screen.dart';
+import 'package:aerolinea/src/ui/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aerolinea/src/ui/home_screen.dart';

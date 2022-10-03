@@ -21,8 +21,8 @@ class LoginState {
   //Vacío
   factory LoginState.empty() {
     return LoginState(
-        isEmailValid: false,
-        isPasswordValid: false,
+        isEmailValid: true,
+        isPasswordValid: true,
         isSubmitting: false,
         isFailure: false,
         isSuccess: false);
