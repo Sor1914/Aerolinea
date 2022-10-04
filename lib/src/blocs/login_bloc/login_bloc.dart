@@ -2,8 +2,6 @@ import 'package:aerolinea/src/util/validators.dart';
 import 'package:bloc/bloc.dart';
 import 'package:aerolinea/src/blocs/login_bloc/bloc.dart';
 import 'dart:async';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -49,7 +47,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       String password) async {
     emit(LoginState.loading());
     try {
-      _userRepository.signWithCredentials(email, password);
+      await _userRepository.signWithCredentials(email, password);
       emit(LoginState.success());
     } catch (_) {
       emit(LoginState.failure());

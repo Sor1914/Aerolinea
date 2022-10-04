@@ -93,6 +93,7 @@ class _LoginFormState extends State<LoginForm> {
       if (state.isFailure) {
         notificacion(
             context, 'Error Inicio de Sesión', 'Los datos no son correctos', 1);
+        Scaffold.of(context).hideCurrentSnackBar();
       }
       if (state.isSubmitting) {
         Scaffold.of(context)
@@ -106,12 +107,14 @@ class _LoginFormState extends State<LoginForm> {
               ])));
       }
       if (state.isSuccess) {
+        notificacion(context, 'Bienvenido', 'Inicio de sesión correcto', 0);
+        Scaffold.of(context).hideCurrentSnackBar();
         BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
       }
     }, child: BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Form(
               child: ListView(
                 children: <Widget>[
