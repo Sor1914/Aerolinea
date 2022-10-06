@@ -12,21 +12,24 @@ class RegisterState {
   final bool isSuccess;
   final bool isFailure;
   final bool isValidate;
+  final bool isRecord;
+  final bool isPasaportValid;
 
   bool get isFormvalid => isEmailValid && isPasswordValid;
 
-  RegisterState({
-    required this.isEmailValid,
-    required this.isPasswordValid,
-    required this.isNumberValid,
-    required this.isCodeValid,
-    required this.isNumber2Valid,
-    required this.isCode2Valid,
-    required this.isSubmittin,
-    required this.isSuccess,
-    required this.isFailure,
-    required this.isValidate,
-  });
+  RegisterState(
+      {required this.isEmailValid,
+      required this.isPasswordValid,
+      required this.isNumberValid,
+      required this.isCodeValid,
+      required this.isNumber2Valid,
+      required this.isCode2Valid,
+      required this.isSubmittin,
+      required this.isSuccess,
+      required this.isFailure,
+      required this.isRecord,
+      required this.isValidate,
+      required this.isPasaportValid});
 
   factory RegisterState.empty() {
     return RegisterState(
@@ -36,10 +39,12 @@ class RegisterState {
         isCodeValid: true,
         isNumber2Valid: true,
         isCode2Valid: true,
+        isPasaportValid: true,
         isSubmittin: false,
         isSuccess: false,
         isFailure: false,
-        isValidate: false);
+        isValidate: false,
+        isRecord: false);
   }
 
   factory RegisterState.loading() {
@@ -50,10 +55,12 @@ class RegisterState {
         isCodeValid: true,
         isNumber2Valid: true,
         isCode2Valid: true,
+        isPasaportValid: true,
         isSubmittin: true,
         isSuccess: false,
         isFailure: false,
-        isValidate: false);
+        isValidate: false,
+        isRecord: false);
   }
 
   factory RegisterState.failure() {
@@ -64,9 +71,11 @@ class RegisterState {
         isCodeValid: true,
         isNumber2Valid: true,
         isCode2Valid: true,
+        isPasaportValid: true,
         isSubmittin: false,
         isSuccess: false,
         isFailure: true,
+        isRecord: false,
         isValidate: false);
   }
 
@@ -77,11 +86,13 @@ class RegisterState {
         isNumberValid: true,
         isCodeValid: true,
         isNumber2Valid: true,
+        isPasaportValid: true,
         isCode2Valid: true,
         isSubmittin: false,
         isSuccess: true,
+        isRecord: false,
         isFailure: false,
-        isValidate: false);
+        isValidate: true);
   }
 
   factory RegisterState.validated() {
@@ -93,49 +104,70 @@ class RegisterState {
         isNumber2Valid: true,
         isCode2Valid: true,
         isSubmittin: false,
+        isPasaportValid: true,
         isSuccess: false,
         isFailure: false,
+        isRecord: false,
         isValidate: true);
   }
 
-  RegisterState copyWith({
-    bool? isEmailValid,
-    bool? isPasswordValid,
-    bool? isNumberValid,
-    bool? isCodeValid,
-    bool? isNumber2Valid,
-    bool? isCode2Valid,
-    bool? isSubmittin,
-    bool? isSuccess,
-    bool? isFailure,
-    bool? isValidate,
-  }) {
+  factory RegisterState.recorded() {
     return RegisterState(
-      isEmailValid: isEmailValid ?? this.isEmailValid,
-      isPasswordValid: isPasswordValid ?? this.isPasswordValid,
-      isNumberValid: isNumberValid ?? this.isNumberValid,
-      isCodeValid: isCodeValid ?? this.isCodeValid,
-      isNumber2Valid: isNumber2Valid ?? this.isNumber2Valid,
-      isCode2Valid: isCode2Valid ?? this.isCode2Valid,
-      isSubmittin: isSubmittin ?? this.isSubmittin,
-      isSuccess: isSuccess ?? this.isSuccess,
-      isFailure: isFailure ?? this.isFailure,
-      isValidate: isValidate ?? this.isValidate,
-    );
+        isEmailValid: true,
+        isPasswordValid: true,
+        isNumberValid: true,
+        isCodeValid: true,
+        isNumber2Valid: true,
+        isCode2Valid: true,
+        isSubmittin: false,
+        isPasaportValid: true,
+        isSuccess: true,
+        isFailure: false,
+        isRecord: true,
+        isValidate: true);
   }
 
-  RegisterState update({
-    bool? isEmailValid,
-    bool? isPasswordValid,
-    bool? isNumberValid,
-    bool? isCodeValid,
-    bool? isNumber2Valid,
-    bool? isCode2Valid,
-    bool? isSubmittin,
-    bool? isSuccess,
-    bool? isFailure,
-    bool? isValidate,
-  }) {
+  RegisterState copyWith(
+      {bool? isEmailValid,
+      bool? isPasswordValid,
+      bool? isNumberValid,
+      bool? isCodeValid,
+      bool? isNumber2Valid,
+      bool? isCode2Valid,
+      bool? isSubmittin,
+      bool? isSuccess,
+      bool? isFailure,
+      bool? isValidate,
+      bool? isRecord,
+      bool? isPasaportValid}) {
+    return RegisterState(
+        isEmailValid: isEmailValid ?? this.isEmailValid,
+        isPasswordValid: isPasswordValid ?? this.isPasswordValid,
+        isNumberValid: isNumberValid ?? this.isNumberValid,
+        isCodeValid: isCodeValid ?? this.isCodeValid,
+        isNumber2Valid: isNumber2Valid ?? this.isNumber2Valid,
+        isCode2Valid: isCode2Valid ?? this.isCode2Valid,
+        isSubmittin: isSubmittin ?? this.isSubmittin,
+        isSuccess: isSuccess ?? this.isSuccess,
+        isFailure: isFailure ?? this.isFailure,
+        isValidate: isValidate ?? this.isValidate,
+        isRecord: isRecord ?? this.isRecord,
+        isPasaportValid: isPasaportValid ?? this.isPasaportValid);
+  }
+
+  RegisterState update(
+      {bool? isEmailValid,
+      bool? isPasswordValid,
+      bool? isNumberValid,
+      bool? isCodeValid,
+      bool? isNumber2Valid,
+      bool? isCode2Valid,
+      bool? isSubmittin,
+      bool? isSuccess,
+      bool? isFailure,
+      bool? isValidate,
+      bool? isRecord,
+      bool? isPasaportValid}) {
     return copyWith(
       isEmailValid: isEmailValid,
       isPasswordValid: isPasswordValid,
@@ -143,10 +175,22 @@ class RegisterState {
       isCodeValid: isCodeValid,
       isNumber2Valid: isNumber2Valid,
       isCode2Valid: isCode2Valid,
+      isValidate: isValidate,
+      isPasaportValid: isPasaportValid,
       isSubmittin: false,
       isSuccess: false,
       isFailure: false,
-      isValidate: false,
+      isRecord: false,
     );
+  }
+
+  @override
+  String toString() {
+    return ''' RegisterState{
+      isEmailValid: $isEmailValid,
+      isPasswordValid: $isPasswordValid,
+      isSubmitting: $isSubmittin,
+      isSuccess: $isSuccess,
+      isFailure: $isFailure} ''';
   }
 }
