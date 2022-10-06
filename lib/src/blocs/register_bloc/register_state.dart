@@ -14,7 +14,7 @@ class RegisterState {
   final bool isValidate;
   final bool isRecord;
   final bool isPasaportValid;
-
+  final bool isValidDateBirth;
   bool get isFormvalid => isEmailValid && isPasswordValid;
 
   RegisterState(
@@ -29,22 +29,25 @@ class RegisterState {
       required this.isFailure,
       required this.isRecord,
       required this.isValidate,
-      required this.isPasaportValid});
+      required this.isPasaportValid,
+      required this.isValidDateBirth});
 
   factory RegisterState.empty() {
     return RegisterState(
-        isEmailValid: true,
-        isPasswordValid: true,
-        isNumberValid: true,
-        isCodeValid: true,
-        isNumber2Valid: true,
-        isCode2Valid: true,
-        isPasaportValid: true,
-        isSubmittin: false,
-        isSuccess: false,
-        isFailure: false,
-        isValidate: false,
-        isRecord: false);
+      isEmailValid: false,
+      isPasswordValid: false,
+      isNumberValid: false,
+      isCodeValid: false,
+      isNumber2Valid: false,
+      isCode2Valid: false,
+      isPasaportValid: false,
+      isValidDateBirth: false,
+      isSubmittin: false,
+      isSuccess: false,
+      isFailure: false,
+      isValidate: false,
+      isRecord: false,
+    );
   }
 
   factory RegisterState.loading() {
@@ -57,6 +60,7 @@ class RegisterState {
         isCode2Valid: true,
         isPasaportValid: true,
         isSubmittin: true,
+        isValidDateBirth: true,
         isSuccess: false,
         isFailure: false,
         isValidate: false,
@@ -72,6 +76,7 @@ class RegisterState {
         isNumber2Valid: true,
         isCode2Valid: true,
         isPasaportValid: true,
+        isValidDateBirth: true,
         isSubmittin: false,
         isSuccess: false,
         isFailure: true,
@@ -88,6 +93,7 @@ class RegisterState {
         isNumber2Valid: true,
         isPasaportValid: true,
         isCode2Valid: true,
+        isValidDateBirth: true,
         isSubmittin: false,
         isSuccess: true,
         isRecord: false,
@@ -103,6 +109,7 @@ class RegisterState {
         isCodeValid: true,
         isNumber2Valid: true,
         isCode2Valid: true,
+        isValidDateBirth: true,
         isSubmittin: false,
         isPasaportValid: true,
         isSuccess: false,
@@ -119,6 +126,7 @@ class RegisterState {
         isCodeValid: true,
         isNumber2Valid: true,
         isCode2Valid: true,
+        isValidDateBirth: true,
         isSubmittin: false,
         isPasaportValid: true,
         isSuccess: true,
@@ -139,7 +147,8 @@ class RegisterState {
       bool? isFailure,
       bool? isValidate,
       bool? isRecord,
-      bool? isPasaportValid}) {
+      bool? isPasaportValid,
+      bool? isValidDateBirth}) {
     return RegisterState(
         isEmailValid: isEmailValid ?? this.isEmailValid,
         isPasswordValid: isPasswordValid ?? this.isPasswordValid,
@@ -152,7 +161,8 @@ class RegisterState {
         isFailure: isFailure ?? this.isFailure,
         isValidate: isValidate ?? this.isValidate,
         isRecord: isRecord ?? this.isRecord,
-        isPasaportValid: isPasaportValid ?? this.isPasaportValid);
+        isPasaportValid: isPasaportValid ?? this.isPasaportValid,
+        isValidDateBirth: isValidDateBirth ?? this.isValidDateBirth);
   }
 
   RegisterState update(
@@ -167,7 +177,8 @@ class RegisterState {
       bool? isFailure,
       bool? isValidate,
       bool? isRecord,
-      bool? isPasaportValid}) {
+      bool? isPasaportValid,
+      bool? isValidDateBirth}) {
     return copyWith(
       isEmailValid: isEmailValid,
       isPasswordValid: isPasswordValid,
@@ -177,6 +188,7 @@ class RegisterState {
       isCode2Valid: isCode2Valid,
       isValidate: isValidate,
       isPasaportValid: isPasaportValid,
+      isValidDateBirth: isValidDateBirth,
       isSubmittin: false,
       isSuccess: false,
       isFailure: false,

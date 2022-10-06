@@ -56,11 +56,6 @@ class App extends StatelessWidget {
               userRepository: _userRepository,
             );
           }
-          if (state is Unauthenticated) {
-            return RegisterScreen(
-              userRepository: _userRepository,
-            );
-          }
           return Container();
           //return LoginScreen();
         },

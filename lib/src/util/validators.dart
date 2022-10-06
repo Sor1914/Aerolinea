@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Validators {
   static final RegExp _passRegExp = RegExp(
     r"^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$",
@@ -17,7 +19,7 @@ class Validators {
   }
 
   static isValidPhone(String phone) {
-    if (phone.length == 8 && _numberRegExp.hasMatch(phone)) {
+    if (phone.length == 8) {
       return true;
     } else {
       return false;
@@ -25,7 +27,7 @@ class Validators {
   }
 
   static isValidCodeCountry(String code) {
-    if (code.length == 3 && _numberRegExp.hasMatch(code)) {
+    if (code.length == 3) {
       return true;
     } else {
       return false;
@@ -33,6 +35,23 @@ class Validators {
   }
 
   static isValidPasaport(String pasaport) {
-    if (pasaport.length == 13 && _numberRegExp.hasMatch(pasaport)) ;
+    if (pasaport.length == 13) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static isValidDate(DateTime date) {
+    DateTime now = DateTime.now();
+
+    num resultadoDias = date.difference(now).inDays;
+    num resultadoAnios = (resultadoDias / 365);
+
+    if (resultadoAnios > 18) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

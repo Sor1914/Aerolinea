@@ -15,6 +15,8 @@ import 'package:aerolinea/src/Assets/Notificaciones.dart';
 import 'package:aerolinea/src/blocs/authentication bloc/bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../models/usuario.dart';
+
 class RegisterScreen extends StatelessWidget {
   @override
   final UserRepository _userRepository;
@@ -45,27 +47,27 @@ class RegisterForm extends StatefulWidget {
 
 final _formKey = GlobalKey<FormState>();
 final _auth = FirebaseAuth.instance;
-late String pasaporte;
-late String nombre;
-late String apellido;
-late String fechaNacimiento;
-late String nacionalidad;
-late String email;
-late String codigoPais;
-late String telefono;
-late String codigoPaisEmer;
-late String telefonoEmergencia;
-late String direccion;
-late String password;
+
 bool validado = false;
 bool visible = true;
 String validar = 'Validar';
 
 bool shoSpinner = false;
+DateTime? pickedDate = DateTime.now();
 
-TextEditingController dateInput = TextEditingController();
-TextEditingController numeroInput = TextEditingController();
-TextEditingController emergenciaInput = TextEditingController();
+TextEditingController tecDate = TextEditingController();
+TextEditingController tecNumber = TextEditingController();
+TextEditingController tecNumber2 = TextEditingController();
+TextEditingController tecPasaport = TextEditingController();
+TextEditingController tecName = TextEditingController();
+TextEditingController tecLastName = TextEditingController();
+String? dateBirth;
+TextEditingController tecNationality = TextEditingController();
+TextEditingController tecEmail = TextEditingController();
+TextEditingController tecCode = TextEditingController();
+TextEditingController tecCode2 = TextEditingController();
+TextEditingController tecAddress = TextEditingController();
+TextEditingController tecPassword = TextEditingController();
 
 class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _emailController = TextEditingController();
@@ -96,25 +98,16 @@ class _RegisterFormState extends State<RegisterForm> {
                 content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const <Widget>[
-                  Text('Ingresando...'),
+                  Text('Cargando...'),
                   CircularProgressIndicator(),
                 ])));
         }
+
         if (state.isRecord) {
+          Scaffold.of(context).hideCurrentSnackBar();
           notificacion(
               context, 'Gracias', 'Te has registrado correctamente', 0);
-          Scaffold.of(context).hideCurrentSnackBar();
-          BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
         }
-        Scaffold.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(
-              content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                Text('Ingresando...'),
-                CircularProgressIndicator(),
-              ])));
       },
       child:
           BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
@@ -142,16 +135,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 10,
                 ),
                 TextFormField(
+                    controller: tecPasaport,
                     enabled: (visible),
                     maxLength: 13,
                     keyboardType: TextInputType.phone,
                     textAlign: TextAlign.center,
-                    onChanged: (value) {
-                      pasaporte = value;
-
-                      //Do something with the user input.
-                    },
-                    validator: (_) {
+                    validator: (value) {
                       return !state.isPasaportValid
                           ? "Pasarpote inválido"
                           : null;
@@ -163,11 +152,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 8.0,
                 ),
                 TextFormField(
+                    controller: tecName,
                     enabled: (visible),
                     keyboardType: TextInputType.name,
                     textAlign: TextAlign.center,
                     validator: (value) {
-                      return nombre.isEmpty ? "*Campo obligatorio" : null;
+                      return value!.isEmpty ? "*Campo obligatorio" : null;
                     },
                     decoration: kTextFieldDecoration.copyWith(
                         icon: const Icon(Icons.person),
@@ -176,15 +166,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 8.0,
                 ),
                 TextFormField(
+                    controller: tecLastName,
                     enabled: (visible),
                     keyboardType: TextInputType.name,
                     textAlign: TextAlign.center,
-                    onChanged: (value) {
-                      apellido = value;
-                      //Do something with the user input.
-                    },
-                    validator: (Y) {
-                      return apellido.isEmpty ? "*Campo obligatorio" : null;
+                    validator: (value) {
+                      return value!.isEmpty ? "*Campo obligatorio" : null;
                     },
                     decoration: kTextFieldDecoration.copyWith(
                         icon: const Icon(Icons.person),
@@ -193,13 +180,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 8.0,
                 ),
                 TextFormField(
+                    controller: tecNationality,
                     enabled: (visible),
                     keyboardType: TextInputType.name,
                     textAlign: TextAlign.center,
-                    onChanged: (value) {
-                      nacionalidad = value;
-                      //Do something with the user input.
-                    },
                     decoration: kTextFieldDecoration.copyWith(
                         icon: const Icon(Icons.flag),
                         hintText: 'Ingrese su Nacionalidad')),
@@ -211,13 +195,11 @@ class _RegisterFormState extends State<RegisterForm> {
                     Expanded(
                       flex: 4,
                       child: TextFormField(
+                          controller: tecCode,
                           enabled: (visible),
                           keyboardType: TextInputType.phone,
                           maxLength: 3,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            codigoPais = value;
-                          },
                           validator: (Y) {
                             return !state.isCodeValid ? "*Error" : null;
                           },
@@ -227,13 +209,11 @@ class _RegisterFormState extends State<RegisterForm> {
                     Expanded(
                       flex: 6,
                       child: TextFormField(
+                          controller: tecNumber,
                           enabled: (visible),
                           maxLength: 8,
                           keyboardType: TextInputType.phone,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            telefono = value;
-                          },
                           validator: (Y) {
                             return !state.isNumberValid
                                 ? "*Ingrese un número válido"
@@ -249,41 +229,47 @@ class _RegisterFormState extends State<RegisterForm> {
                   children: <Widget>[
                     Expanded(
                       flex: 4,
-                      child: TextField(
+                      child: TextFormField(
+                          controller: tecCode2,
                           enabled: (visible),
                           maxLength: 3,
                           keyboardType: TextInputType.name,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            codigoPaisEmer = value;
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                            } else {
+                              !state.isCode2Valid ? "*Error" : null;
+                            }
                           },
-                          onEditingComplete: () async {},
                           decoration: kTextFieldDecoration.copyWith(
                               icon: const Icon(Icons.phone), hintText: '+502')),
                     ),
                     Expanded(
                       flex: 6,
-                      child: TextField(
+                      child: TextFormField(
+                          controller: tecNumber2,
                           enabled: (visible),
                           maxLength: 8,
                           keyboardType: TextInputType.name,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            telefonoEmergencia = value;
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                            } else {
+                              !state.isNumber2Valid
+                                  ? "*Ingrese un número válido"
+                                  : null;
+                            }
                           },
-                          onEditingComplete: () async {},
                           decoration: kTextFieldDecoration.copyWith(
                               hintText: 'Emergencia')),
                     ),
                   ],
                 ),
-                TextField(
+                TextFormField(
+                    controller: tecAddress,
                     enabled: (visible),
                     keyboardType: TextInputType.name,
                     textAlign: TextAlign.center,
-                    onChanged: (value) {
-                      direccion = value;
-                    },
                     decoration: kTextFieldDecoration.copyWith(
                         icon: const Icon(Icons.home),
                         hintText: 'Ingrese su Dirección')),
@@ -291,12 +277,14 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 8.0,
                 ),
                 TextFormField(
+                  controller: tecEmail,
                   enabled: (visible),
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value;
-                    //Do something with the user input.
+                  validator: (value) {
+                    return !state.isEmailValid
+                        ? "Ingrese un Correo Válido"
+                        : null;
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       icon: const Icon(Icons.email),
@@ -305,13 +293,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 const SizedBox(
                   height: 8.0,
                 ),
-                TextField(
+                TextFormField(
+                    controller: tecPassword,
                     enabled: (visible),
                     obscureText: true,
                     textAlign: TextAlign.center,
-                    onChanged: (value) {
-                      password = value;
-                      //Do something with the user input.
+                    validator: (value) {
+                      return !state.isPasswordValid
+                          ? "La contraseña debe contener mayúsculas, minúsculas, letras y un caracter especial '!?/'"
+                          : null;
                     },
                     decoration: kTextFieldDecoration.copyWith(
                         icon: const Icon(Icons.password),
@@ -324,29 +314,33 @@ class _RegisterFormState extends State<RegisterForm> {
                     padding: EdgeInsets.all(0),
                     // height: MediaQuery.of(context).size.width / 3,
                     child: Center(
-                        child: TextField(
-                      controller: dateInput,
+                        child: TextFormField(
+                      controller: tecDate,
                       decoration: kTextFieldDecoration.copyWith(
                           icon: const Icon(Icons.baby_changing_station),
                           hintText: 'Fecha de Nacimiento'),
+                      textAlign: TextAlign.center,
                       readOnly: true,
                       //set it true, so that user will not able to edit text
                       onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
+                        pickedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime(2000),
                             firstDate: DateTime(1900),
                             lastDate: DateTime(2100));
                         if (pickedDate != null) {
-                          print(pickedDate);
                           String formattedDate =
                               DateFormat('dd-MM-yyyy').format(pickedDate);
-                          print(formattedDate);
                           setState(() {
-                            dateInput.text = formattedDate;
-                            fechaNacimiento = formattedDate;
+                            tecDate.text = formattedDate;
+                            dateBirth = formattedDate;
                           });
                         } else {}
+                      },
+                      validator: (Y) {
+                        !state.isValidDateBirth
+                            ? "No tiene edad suficiente para crear una cuenta"
+                            : null;
                       },
                     ))),
                 Row(
@@ -356,17 +350,20 @@ class _RegisterFormState extends State<RegisterForm> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Colors.blue, onPrimary: Colors.white),
-                            child: const Text('Guardar'),
+                            child: Text(validar),
                             onPressed: () {
-                              //Validar debe cambiar de nombre porque sera el mismo botón para cancelar
-                              if (_formKey.currentState!.validate()) {
-                                // If the form is valid, display a snackbar. In the real world,
-                                // you'd often call a server or save the information in a database.
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Processing Data')),
-                                );
+                              onFormValidated();
+                              if (validar == "Cancelar") {
+                                validar == "Validar";
+                                validado = false;
+                              } else {
+                                if (_formKey.currentState!.validate()) {
+                                  validar = "Cancelar";
+                                  validado = true;
+                                }
                               }
+
+                              //Validar debe cambiar de nombre porque sera el mismo botón para cancelar
                             })),
                     const Expanded(flex: 2, child: Text('')),
                     Expanded(
@@ -387,42 +384,12 @@ class _RegisterFormState extends State<RegisterForm> {
                                   showSpinner = true;
                                 });
                                 try {
-                                  final newUser = await _auth
-                                      .createUserWithEmailAndPassword(
-                                          email: email, password: password);
-                                  if (newUser != null) {
-                                    //var respuesta = await Usuarios.addUsuario(
-                                    //  idUsuario: newUser.user.uid.toString(),
-                                    //    pasaporte: pasaporte.toString(),
-                                    //  nombre: nombre.toString(),
-                                    //apellido: apellido.toString(),
-                                    //       codigoPais: codigoPais.toString(),
-                                    //      telefono: telefono.toString(),
-                                    //     codigoPaisEmer: codigoPaisEmer.toString(),
-                                    //    telefonoEmer: telefonoEmergencia.toString(),
-                                    //     correo: email.toString(),
-                                    //     direccion: direccion.toString(),
-                                    //    fechaNacimiento: fechaNacimiento.toString(),
-                                    //    nacionalidad: nacionalidad.toString(),
-                                    //      rol: '0',
-                                    //     usuarioCrea: 'CreaciónUsuarios',
-                                    //     fechaCrea: DateTime.now().toString(),
-                                    //     usuarioMod: '',
-                                    //     fechaMod: '',
-                                    //     estado: '1');
-                                    Navigator.pushNamed(
-                                        context, 'login_screen');
-                                    notificacion(context, 'Registro',
-                                        'Se ha registrado correctamente', 0);
-                                  }
+                                  _onRegister();
                                 } catch (e) {
                                   AlertaUnBoton(
                                       context, 'Error', e.toString(), 'Aceptar',
                                       pAccion: () => Navigator.pop(context));
                                 }
-                                setState(() {
-                                  showSpinner = false;
-                                });
                               }
                             })),
                   ],
@@ -431,5 +398,34 @@ class _RegisterFormState extends State<RegisterForm> {
         );
       }),
     );
+  }
+
+  void onFormValidated() {
+    _registerBloc.add(Validate(
+        email: tecEmail.text,
+        password: tecPassword.text,
+        code: tecCode.text,
+        code2: tecCode2.text,
+        number: tecNumber.text,
+        number2: tecNumber2.text,
+        pasaport: tecPasaport.text));
+  }
+
+  void _onRegister() {
+    Usuario usuario = Usuario(
+        apellido: tecLastName.text,
+        codigoPais: tecCode.text,
+        codigoPaisEmer: tecCode2.text,
+        correo: tecEmail.text,
+        direccion: tecAddress.text,
+        fechaNacimiento: tecDate.text,
+        nacionalidad: tecNationality.text,
+        nombre: tecName.text,
+        pasaporte: tecPasaport.text,
+        telefono: tecNumber.text,
+        telefonoEmer: tecNumber2.text);
+
+    _registerBloc.add(Register(
+        email: tecEmail.text, password: tecPassword.text, usuario: usuario));
   }
 }

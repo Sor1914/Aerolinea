@@ -75,14 +75,15 @@ class Validate extends RegisterEvent {
   final String code2;
   final String pasaport;
 
-  const Validate(
-      {required this.email,
-      required this.password,
-      required this.code,
-      required this.code2,
-      required this.number,
-      required this.number2,
-      required this.pasaport});
+  const Validate({
+    required this.email,
+    required this.password,
+    required this.code,
+    required this.code2,
+    required this.number,
+    required this.number2,
+    required this.pasaport,
+  });
 
   @override
   List<Object> get props => [email, password];

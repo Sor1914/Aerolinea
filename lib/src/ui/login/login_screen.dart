@@ -1,5 +1,6 @@
 import 'package:aerolinea/src/blocs/login_bloc/bloc.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
+import 'package:aerolinea/src/ui/register/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository _userRepository = new UserRepository();
     return BlocListener<LoginBloc, LoginState>(listener: (context, state) {
       if (state.isFailure) {
         notificacion(
@@ -177,10 +179,11 @@ class _LoginFormState extends State<LoginForm> {
                       colour: Colors.blueAccent,
                       title: 'Registrarse',
                       onPressed: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return Container();
-                        }));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen(
+                                    userRepository: _userRepository)));
                       }),
                   RoundedButton(
                       colour: const Color.fromARGB(255, 184, 184, 184),

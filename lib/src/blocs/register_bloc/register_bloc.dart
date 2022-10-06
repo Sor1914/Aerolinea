@@ -16,11 +16,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           _validate(event, emit, event.email, event.password, event.number,
               event.code, event.number2, event.code2, event.pasaport)
         });
-    on<Register>((event, emit) => {
-          (event, emit) async => {
-                await _register(
-                    event, emit, event.email, event.password, event.usuario)
-              }
+    on<Register>((event, emit) async => {
+          await _register(
+              event, emit, event.email, event.password, event.usuario)
         });
   }
 
@@ -39,15 +37,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Future<void> _validate(
-      registerState,
-      Emitter<RegisterState> emit,
-      String email,
-      String pass,
-      String number,
-      String code,
-      String number2,
-      String code2,
-      String pasaport) async {
+    registerState,
+    Emitter<RegisterState> emit,
+    String email,
+    String pass,
+    String number,
+    String code,
+    String number2,
+    String code2,
+    String pasaport,
+  ) async {
     emit(state.update(
         isCodeValid: Validators.isValidCodeCountry(code),
         isCode2Valid: Validators.isValidCodeCountry(code2),
@@ -62,11 +61,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       String email, String password, Usuario usuario) async {
     emit(RegisterState.loading());
     try {
-      await _userRepository.register(email, password);
+      final newUser = await _userRepository.register(email, password);
+      usuario.idUsuario = newUser.user.uid.toString();
+
       emit(RegisterState.success());
       if (state.isSuccess) {
         await _userRepository.addUsuario(
             usuario, "Autocreación", DateTime.now().toString(), "", "", "1");
+        emit(RegisterState.recorded());
       }
     } catch (_) {
       emit(RegisterState.failure());
