@@ -92,6 +92,7 @@ class _RegisterFormState extends State<RegisterForm> {
           Scaffold.of(context).hideCurrentSnackBar();
         }
         if (state.isSubmittin) {
+          onFormValidated();
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
