@@ -10,9 +10,7 @@ import 'package:aerolinea/src/ui/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aerolinea/src/ui/home_screen.dart';
-import 'package:aerolinea/src/ui/register/register_screen%20anterior.dart';
 import 'package:aerolinea/src/ui/AgregarAvion.dart';
-import 'package:aerolinea/src/ui/AgregarAerolinea.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +47,9 @@ class App extends StatelessWidget {
             return SplashScreen();
           }
           if (state is Authenticated) {
-            return HomeScreen();
+            return HomeScreen(
+              userRepository: _userRepository,
+            );
           }
           if (state is Unauthenticated) {
             return LoginScreen(

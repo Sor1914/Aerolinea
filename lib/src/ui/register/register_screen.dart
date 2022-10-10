@@ -70,9 +70,6 @@ TextEditingController tecAddress = TextEditingController();
 TextEditingController tecPassword = TextEditingController();
 
 class _RegisterFormState extends State<RegisterForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
   late RegisterBloc _registerBloc;
 
   UserRepository? get _userRepository => widget._userRepository;
@@ -80,6 +77,18 @@ class _RegisterFormState extends State<RegisterForm> {
   void initState() {
     super.initState();
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    tecDate.addListener(onFormValidated);
+    tecNumber.addListener(onFormValidated);
+    tecNumber2.addListener(onFormValidated);
+    tecPasaport.addListener(onFormValidated);
+    tecName.addListener(onFormValidated);
+    tecLastName.addListener(onFormValidated);
+    tecNationality.addListener(onFormValidated);
+    tecEmail.addListener(onFormValidated);
+    tecCode.addListener(onFormValidated);
+    tecCode2.addListener(onFormValidated);
+    tecAddress.addListener(onFormValidated);
+    tecPassword.addListener(onFormValidated);
   }
 
   @override
@@ -105,6 +114,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
         if (state.isRecord) {
           Scaffold.of(context).hideCurrentSnackBar();
+
+          _clearFields();
+          Navigator.pop(context);
           notificacion(
               context, 'Gracias', 'Te has registrado correctamente', 0);
         }
@@ -337,9 +349,9 @@ class _RegisterFormState extends State<RegisterForm> {
                           });
                         } else {}
                       },
-                      validator: (Y) {
-                        !state.isValidDateBirth
-                            ? "No tiene edad suficiente para crear una cuenta"
+                      validator: (value) {
+                        return value!.isEmpty
+                            ? "Ingrese su fecha de nacimiento"
                             : null;
                       },
                     ))),
@@ -352,26 +364,28 @@ class _RegisterFormState extends State<RegisterForm> {
                                 primary: Colors.blue, onPrimary: Colors.white),
                             child: Text(validar),
                             onPressed: () {
-                              onFormValidated();
-                              if (validar == "Cancelar") {
-                                validar == "Validar";
-                                validado = false;
-                              } else {
-                                if (_formKey.currentState!.validate()) {
-                                  validar = "Cancelar";
-                                  validado = true;
+                              setState(() {
+                                if (validar == "Cancelar") {
+                                  validar = "Validar";
+                                  validado = false;
+                                } else {
+                                  if (_formKey.currentState!.validate()) {
+                                    validar = "Cancelar";
+                                    validado = true;
+                                  }
                                 }
-                              }
+                              });
 
                               //Validar debe cambiar de nombre porque sera el mismo botón para cancelar
                             })),
                     const Expanded(flex: 2, child: Text('')),
                     Expanded(
                         flex: 4,
-                        child: RoundedButton(
-                            colour: Colors.blueAccent,
-                            title: 'Registrarse',
-                            onPressed: () async {
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.blue, onPrimary: Colors.white),
+                            child: const Text('Registrarse'),
+                            onPressed: () {
                               if (validado == false) {
                                 AlertaUnBoton(
                                     context,
@@ -427,5 +441,21 @@ class _RegisterFormState extends State<RegisterForm> {
 
     _registerBloc.add(Register(
         email: tecEmail.text, password: tecPassword.text, usuario: usuario));
+  }
+
+  void _clearFields() {
+    tecDate.clear();
+    tecNumber.clear();
+    tecNumber2.clear();
+    tecPasaport.clear();
+    tecName.clear();
+    tecLastName.clear();
+    tecNationality.clear();
+    tecEmail.clear();
+    tecCode.clear();
+    tecCode2.clear();
+    tecAddress.clear();
+    tecPassword.clear();
+    validar = 'Validar';
   }
 }

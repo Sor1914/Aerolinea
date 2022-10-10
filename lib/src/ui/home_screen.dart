@@ -1,3 +1,6 @@
+import 'package:aerolinea/src/repository/aeroline_repository.dart';
+import 'package:aerolinea/src/repository/user_repository.dart';
+import 'package:aerolinea/src/ui/aerolinea/addaerolinea_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,15 +27,30 @@ const kTextFieldDecoration = InputDecoration(
 
 class HomeScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  final UserRepository _userRepository;
+
+  HomeScreen({
+    Key? key,
+    required UserRepository userRepository,
+  })  : assert(userRepository != null),
+        _userRepository = userRepository,
+        super(key: key);
+  _HomeScreenState createState() =>
+      _HomeScreenState(userRepository: _userRepository);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final UserRepository _userRepository;
+
+  _HomeScreenState({Key? key, required UserRepository userRepository})
+      : assert(userRepository != null),
+        _userRepository = userRepository;
+
   bool blAerolinea = false;
   bool blVuelos = false;
   bool blConsultas = false;
   bool blUsuarios = false;
-
+  AerolineaRepository repository = AerolineaRepository();
   final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: const Icon(Icons.airlines_rounded),
                   title: const Text('Agregar Aerolínea'),
                   onTap: () {
-                    Navigator.pushNamed(context, 'agregar_aerolinea');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddAerolineaScreen(
+                                  repository: repository,
+                                  userRepository: _userRepository,
+                                )));
                   },
                 ),
               ),
