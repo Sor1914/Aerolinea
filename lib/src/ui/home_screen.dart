@@ -1,6 +1,8 @@
 import 'package:aerolinea/src/repository/aeroline_repository.dart';
+import 'package:aerolinea/src/repository/avion_repository.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
 import 'package:aerolinea/src/ui/aerolinea/addaerolinea_screen.dart';
+import 'package:aerolinea/src/ui/aerolinea/addavion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool blConsultas = false;
   bool blUsuarios = false;
   AerolineaRepository repository = AerolineaRepository();
+  AvionRepository avionRepository = AvionRepository();
   final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: const Icon(Icons.airplanemode_active),
                   title: const Text('Agregar Avión'),
                   onTap: () {
-                    Navigator.pushNamed(context, 'agregar_avion');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddAvionScreen(
+                                  repository: avionRepository,
+                                  userRepository: _userRepository,
+                                )));
                   },
                 ),
               ),
