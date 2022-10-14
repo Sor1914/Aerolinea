@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'package:aerolinea/src/blocs/avion_bloc/bloc.dart';
 import 'package:aerolinea/src/models/avion.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
@@ -6,7 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:aerolinea/src/Assets/Notificaciones.dart';
 import 'package:aerolinea/src/repository/avion_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rxdart/rxdart.dart';
+import '../../models/aerolinea.dart';
 import '../AgregarAvion.dart';
 
 class AddAvionScreen extends StatelessWidget {
@@ -63,7 +67,9 @@ class _AddAvionFormState extends State<AddAvionForm> {
   String? dropdownValue = 'Dog';
   final _formKey = GlobalKey<FormState>();
   late AvionBloc _AvionBloc;
-
+  var selectedCurrency;
+  var items;
+  List<DropdownMenuItem> currencyItems = [];
   List<String> aerolineasList = ['0', '1'];
   //List<String> prueba = _repository.getAerolineas();
   AvionRepository? get _repository => widget._repository;
@@ -72,15 +78,11 @@ class _AddAvionFormState extends State<AddAvionForm> {
   void initState() {
     super.initState();
     _AvionBloc = BlocProvider.of<AvionBloc>(context);
-    getUserrrr();
   }
 
   @override
   Widget build(BuildContext context) {
     String usuario;
-    AvionRepository _repository = AvionRepository();
-    UserRepository _userRepository = UserRepository();
-
     return BlocListener<AvionBloc, AvionState>(listener: (context, state) {
       if (state.isFailure) {
         notificacion(context, 'Error', 'Los datos no se guardaron', 1);
@@ -156,25 +158,25 @@ class _AddAvionFormState extends State<AddAvionForm> {
                                   }
                                 },
                               ),
-                              DropdownButtonFormField(
-                                  decoration: const InputDecoration(
-                                      labelText: 'Aerolinea'),
-                                  value: '1',
-                                  items: aerolineasList
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      dropdownValue = newValue;
-                                    });
-                                  }),
+                              StreamBuilder(builder: builder),
+                              DropdownButtonFormField<String>(
+                                decoration: const InputDecoration(
+                                    labelText: 'Aerolinea'),
+                                value: selectedCurrency,
+                                items: items,
+                                onChanged: (currencyValue) {
+                                  final snackBar = SnackBar(
+                                      content: Text(
+                                          'Selected Currency value is ${currencyValue}'));
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  setState(() {
+                                    selectedCurrency = currencyValue;
+                                  });
+                                },
+                                validator: (value) {
+                                  return 'jeje';
+                                },
+                              ),
                               Row(
                                 children: const <Widget>[
                                   Expanded(child: Text(''))
@@ -244,10 +246,6 @@ class _AddAvionFormState extends State<AddAvionForm> {
     txtMarca.clear();
     txtModelo.clear();
     txtSerie.clear();
-  }
-
-  void getUserrrr() async {
-    usuario = await _repository!.getUser();
   }
 
   void _onSave() {

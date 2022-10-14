@@ -42,4 +42,9 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
       emailChanged, Emitter<AvionState> emit, String email) async {
     emit(state.update(isValidEmail: Validators.isValidEmail(email)));
   }
+
+  Future<String> _listItems(Emitter<AvionState> emit, String email) async {
+    emit(state.update(isValidEmail: Validators.isValidEmail(email)));
+    return "";
+  }
 }

@@ -3,6 +3,7 @@ import 'package:aerolinea/src/models/reponse.dart';
 import 'package:aerolinea/src/models/avion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../models/aerolinea.dart';
 
@@ -11,7 +12,6 @@ final CollectionReference _Collection = _firestore.collection('avion');
 
 class AvionRepository {
   //agregar Aerolinea
-  late FirebaseAuth _firebaseAuth;
   Future<Response> addAvion({required Avion avion}) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc();
@@ -43,21 +43,6 @@ class AvionRepository {
     return _Collection.snapshots();
   }
 
-  Future<List<Aerolinea>> getAerolinea() async {
-    CollectionReference _Collections = await _firestore.collection('aerolinea');
-    DocumentReference documentReferencer = _Collections.doc();
-
-    List<Aerolinea> aerolinea = [];
-    try {
-      Stream<QuerySnapshot> snap = _Collection.snapshots();
-      var data = Map<String, dynamic>.from(snap as Map);
-
-      return aerolinea;
-    } catch (e) {
-      return aerolinea;
-    }
-  }
-
   Future<Response> updAvion({required Avion avion}) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc("codigo");
@@ -82,9 +67,5 @@ class AvionRepository {
       response.message = e;
     });
     return response;
-  }
-
-  Future<String> getUser() async {
-    return (_firebaseAuth.currentUser).email;
   }
 }

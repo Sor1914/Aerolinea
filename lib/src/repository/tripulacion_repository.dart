@@ -73,13 +73,13 @@ class TripulacionRepository {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc("codigo");
     Map<String, dynamic> data = <String, dynamic>{
-      "serie": Tripulacion.serie,
-      "marca": Tripulacion.marca,
-      "modelo": Tripulacion.modelo,
-      "aerolinea": Tripulacion.aerolinea,
-      "asientos": Tripulacion.asientos,
-      "estado": Tripulacion.estado,
-      "fechaCrea": Tripulacion.fechaCre,
+      // "serie": Tripulacion.serie,
+      // "marca": Tripulacion.marca,
+      // "modelo": Tripulacion.modelo,
+      // "aerolinea": Tripulacion.aerolinea,
+      // "asientos": Tripulacion.asientos,
+      // "estado": Tripulacion.estado,
+      // "fechaCrea": Tripulacion.fechaCre,
       "usuarioCrea": Tripulacion.usuarioCrea,
       "fechaMod": Tripulacion.fechaModifica,
       "usuarioMod": Tripulacion.usuarioModifica,
