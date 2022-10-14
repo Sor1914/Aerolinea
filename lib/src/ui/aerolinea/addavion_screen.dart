@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_new
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aerolinea/src/blocs/avion_bloc/bloc.dart';
 import 'package:aerolinea/src/models/avion.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
@@ -158,24 +158,47 @@ class _AddAvionFormState extends State<AddAvionForm> {
                                   }
                                 },
                               ),
-                              StreamBuilder(builder: builder),
-                              DropdownButtonFormField<String>(
-                                decoration: const InputDecoration(
-                                    labelText: 'Aerolinea'),
-                                value: selectedCurrency,
-                                items: items,
-                                onChanged: (currencyValue) {
-                                  final snackBar = SnackBar(
-                                      content: Text(
-                                          'Selected Currency value is ${currencyValue}'));
-                                  Scaffold.of(context).showSnackBar(snackBar);
-                                  setState(() {
-                                    selectedCurrency = currencyValue;
-                                  });
-                                },
-                                validator: (value) {
-                                  return 'jeje';
-                                },
+                              StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection("aerolinea")
+                                    .snapshots(),
+                                builder: ((context, snapshot) {
+                                  var retorno;
+                                  if (!snapshot.hasData) {
+                                    retorno = const Text("Loading");
+                                  } else {
+                                    currencyItems = [];
+                                    for (int i = 0;
+                                        i < snapshot.data!.documents.length;
+                                        i++) {
+                                      DocumentSnapshot snap =
+                                          snapshot.data!.documents[i];
+                                      currencyItems.add(DropdownMenuItem(
+                                        value: "${snap.documentID}",
+                                        child: Text(
+                                          snap.data()['nombre'],
+                                        ),
+                                      ));
+                                      retorno = Text(snap.documentID);
+                                    }
+                                  }
+                                  return DropdownButtonFormField<dynamic>(
+                                    decoration: const InputDecoration(
+                                        labelText: 'Aerolinea'),
+                                    value: selectedCurrency,
+                                    items: currencyItems,
+                                    onChanged: (currencyValue) {
+                                      final snackBar = SnackBar(
+                                          content: Text(
+                                              'Selected Currency value is ${currencyValue}'));
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackBar);
+                                      setState(() {
+                                        selectedCurrency = currencyValue;
+                                      });
+                                    },
+                                  );
+                                }),
                               ),
                               Row(
                                 children: const <Widget>[
@@ -251,7 +274,7 @@ class _AddAvionFormState extends State<AddAvionForm> {
   void _onSave() {
     DateTime now = DateTime.now();
     Avion avion = Avion(
-      aerolinea: dropdownValue,
+      aerolinea: selectedCurrency,
       asientos: txtAsientos.text,
       estado: "1",
       fechaCre: now.toString(),
