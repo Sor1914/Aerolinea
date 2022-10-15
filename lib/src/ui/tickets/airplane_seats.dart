@@ -4,9 +4,20 @@ import 'package:flutter/material.dart';
 class AirplaneSeats extends StatelessWidget {
   final int _seatsQuantity;
   final List<Widget> columnChildren = [];
+  Color _color;
+  final String _numbers;
+  final String _idDocument;
 
-  AirplaneSeats({super.key, required int seatsQuantity})
-      : _seatsQuantity = seatsQuantity;
+  AirplaneSeats(
+      {super.key,
+      required int seatsQuantity,
+      required color,
+      required numbers,
+      required idDocument})
+      : _seatsQuantity = seatsQuantity,
+        _color = color,
+        _numbers = numbers,
+        _idDocument = idDocument;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +28,7 @@ class AirplaneSeats extends StatelessWidget {
   }
 
   void _fillSeats() {
+    var ocuppiedSeats = _numbers.split('|');
     int internalSeatCounter = 3;
     int seatNumber = 1;
     int seatIndex = 0;
@@ -30,7 +42,28 @@ class AirplaneSeats extends StatelessWidget {
         internalSeatCounter += 5;
         continue;
       }
-      currentSeatRow.add(Seat(number: seatNumber));
+      if (ocuppiedSeats.isNotEmpty) {
+        for (var element in ocuppiedSeats) {
+          if (element != "") {
+            if (int.parse(element) == seatNumber) {
+              _color = Colors.red;
+              break;
+            } else {
+              _color = Colors.green;
+            }
+          } else {
+            continue;
+          }
+        }
+      } else {
+        _color = Colors.green;
+      }
+
+      currentSeatRow.add(Seat(
+          number: seatNumber,
+          color: _color,
+          idDocument: _idDocument,
+          numbers: _numbers));
 
       if (internalSeatCounter - 3 == seatIndex ||
           seatNumber == _seatsQuantity) {

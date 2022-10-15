@@ -20,6 +20,10 @@ class AddRegister extends AvionEvent {
 }
 
 class UpdRegister extends AvionEvent {
+  final Avion avion;
+  final String idDocumento;
+
+  const UpdRegister({required this.avion, required this.idDocumento});
   String toString() => 'ModifyRegisterPressed';
 }
 

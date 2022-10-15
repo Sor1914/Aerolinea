@@ -9,6 +9,8 @@ class Avion {
   String? usuarioCrea;
   String? fechaModifica;
   String? usuarioModifica;
+  String? listaAsientosTemp;
+  String? listaAsientos;
 
   Avion(
       {this.serie,
@@ -20,5 +22,7 @@ class Avion {
       this.fechaCre,
       this.usuarioCrea,
       this.usuarioModifica,
-      this.fechaModifica});
+      this.fechaModifica,
+      this.listaAsientosTemp,
+      this.listaAsientos});
 }

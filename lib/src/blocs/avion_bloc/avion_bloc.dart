@@ -14,6 +14,8 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
         super(AvionState.empty()) {
     on<AddRegister>((event, emit) => {_createAvion(event, emit, event.avion)});
     on<EmailChanged>((event, emit) => {});
+    on<UpdRegister>((event, emit) =>
+        {_updateAvion(event, emit, event.avion, event.idDocumento)});
   }
 
   Future<void> _createAvion(
@@ -28,10 +30,10 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
   }
 
   Future<void> _updateAvion(
-      update, Emitter<AvionState> emit, Avion avion) async {
+      update, Emitter<AvionState> emit, Avion avion, String idDocumento) async {
     emit(AvionState.loading());
     try {
-      _repository.updAvion(avion: avion);
+      _repository.updAvion(avion: avion, idDocumento: idDocumento);
       emit(AvionState.success());
     } catch (_) {
       emit(AvionState.failure());

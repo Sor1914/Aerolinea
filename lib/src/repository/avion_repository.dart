@@ -24,6 +24,8 @@ class AvionRepository {
       "asientos": avion.asientos,
       "estado": avion.estado,
       "fechaCrea": avion.fechaCre,
+      "listaAsientosTemp": avion.listaAsientosTemp,
+      "listaAsientos": avion.listaAsientos,
       "usuarioCrea": avion.usuarioCrea,
       "fechaMod": avion.fechaModifica,
       "usuarioMod": avion.usuarioModifica,
@@ -43,20 +45,13 @@ class AvionRepository {
     return _Collection.snapshots();
   }
 
-  Future<Response> updAvion({required Avion avion}) async {
+  Future<Response> updAvion(
+      {required Avion avion, required String idDocumento}) async {
     Response response = Response();
-    DocumentReference documentReferencer = _Collection.doc("codigo");
+    DocumentReference documentReferencer = _Collection.doc(idDocumento);
     Map<String, dynamic> data = <String, dynamic>{
-      "serie": avion.serie,
-      "marca": avion.marca,
-      "modelo": avion.modelo,
-      "aerolinea": avion.aerolinea,
-      "asientos": avion.asientos,
-      "estado": avion.estado,
-      "fechaCrea": avion.fechaCre,
-      "usuarioCrea": avion.usuarioCrea,
-      "fechaMod": avion.fechaModifica,
-      "usuarioMod": avion.usuarioModifica,
+      "listaAsientosTemp": avion.listaAsientosTemp,
+      "listaAsientos": avion.listaAsientos,
     };
 
     var result = await documentReferencer.update(data).whenComplete(() {

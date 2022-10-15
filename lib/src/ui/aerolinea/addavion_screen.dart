@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_new
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aerolinea/src/blocs/avion_bloc/bloc.dart';
 import 'package:aerolinea/src/models/avion.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
@@ -134,7 +133,7 @@ class _AddAvionFormState extends State<AddAvionForm> {
                               ),
                               TextFormField(
                                 controller: txtMarca,
-                                maxLength: 3,
+                                maxLength: 20,
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
                                 decoration:
@@ -155,6 +154,19 @@ class _AddAvionFormState extends State<AddAvionForm> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Por favor ingrese el modelo';
+                                  }
+                                },
+                              ),
+                              TextFormField(
+                                controller: txtAsientos,
+                                maxLength: 8,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                decoration: const InputDecoration(
+                                    labelText: 'Asientos'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Por favor ingrese el número de asientos';
                                   }
                                 },
                               ),
@@ -279,6 +291,8 @@ class _AddAvionFormState extends State<AddAvionForm> {
       estado: "1",
       fechaCre: now.toString(),
       marca: txtMarca.text,
+      listaAsientos: '',
+      listaAsientosTemp: '',
       modelo: txtModelo.text,
       serie: txtSerie.text,
       usuarioCrea: "aunno",

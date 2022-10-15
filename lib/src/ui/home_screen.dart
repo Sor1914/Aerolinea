@@ -3,6 +3,7 @@ import 'package:aerolinea/src/repository/avion_repository.dart';
 import 'package:aerolinea/src/repository/user_repository.dart';
 import 'package:aerolinea/src/ui/aerolinea/addaerolinea_screen.dart';
 import 'package:aerolinea/src/ui/aerolinea/addavion_screen.dart';
+import 'package:aerolinea/src/ui/tickets/buy_tickets_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Título'),
+        title: const Text('Menú Principal'),
       ),
       body: Center(
         child: ListView(
@@ -77,6 +78,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         MaterialPageRoute(
                             builder: (context) => AddAerolineaScreen(
                                   repository: repository,
+                                  userRepository: _userRepository,
+                                )));
+                  },
+                ),
+              ),
+            ),
+            Visibility(
+              visible: blAerolinea,
+              child: Card(
+                child: ListTile(
+                  leading: const Icon(Icons.airlines_rounded),
+                  title: const Text('Comprar Ticket'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BuyTicketScreen(
+                                  repository: avionRepository,
                                   userRepository: _userRepository,
                                 )));
                   },
