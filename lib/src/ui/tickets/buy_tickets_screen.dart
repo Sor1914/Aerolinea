@@ -78,7 +78,8 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
   var items;
   var asientos;
   var idDocument;
-  var occupiedSeat;
+  String occupiedSeat = "";
+  bool isReset = false;
   List<DropdownMenuItem> currencyItems = [];
   AvionRepository? get _repository => widget._repository;
 
@@ -120,7 +121,7 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
         appBar: AppBar(
           title: Text("Tickets"),
         ),
-        body: Padding(
+        body: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Column(
               children: <Widget>[
@@ -137,11 +138,8 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                           i++) {
                         DocumentSnapshot snap = snapshot.data!.documents[i];
                         currencyItems.add(DropdownMenuItem(
-                          value: snap.data()['asientos'] +
-                              '|' +
-                              snap.documentID +
-                              '[' +
-                              snap.data()['listaAsientos'],
+                          value:
+                              snap.data()['asientos'] + '|' + snap.documentID,
                           child: Text(
                             snap.data()['modelo'],
                           ),
@@ -161,14 +159,19 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                               if (selectedCurrency != null) {
                                 asientos =
                                     int.parse(selectedCurrency.split('|')[0]);
-                                idDocument = selectedCurrency
-                                    .split('[')[0]
-                                    .split('|')[1];
-                                occupiedSeat = selectedCurrency.split('[')[1];
+                                idDocument = selectedCurrency.split('|')[1];
                               } else {
                                 asientos = 0;
                                 idDocument = '';
                               }
+                              /* occupiedSeat = _repository
+                                  .getSeat(idDocumento: idDocument)
+                                  .then((value) => null);*/
+                              _repository
+                                  .getSeat(idDocumento: idDocument)
+                                  .then((value) {
+                                occupiedSeat = value;
+                              });
                             });
                           },
                         ),
@@ -178,14 +181,23 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                         AirplaneSeats(
                             seatsQuantity: asientos ?? 0,
                             idDocument: idDocument ?? '',
-                            numbers: occupiedSeat ?? '',
-                            color: Colors.green),
+                            numbers: occupiedSeat,
+                            color: Colors.green,
+                            isReset: isReset),
                       ],
                     );
                   }),
                 ),
               ],
             )),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _repository.setSeat(idDocumento: idDocument);
+            isReset = true;
+          },
+          child: const Icon(Icons.add),
+        ),
+
         // This trailing comma makes auto-formatting nicer for build methods.
       );
     }));

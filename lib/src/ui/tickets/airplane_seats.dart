@@ -5,20 +5,21 @@ class AirplaneSeats extends StatelessWidget {
   final int _seatsQuantity;
   final List<Widget> columnChildren = [];
   Color _color;
-  final String _numbers;
+  var _numbers;
   final String _idDocument;
-
+  final bool _isReset;
   AirplaneSeats(
       {super.key,
       required int seatsQuantity,
       required color,
       required numbers,
-      required idDocument})
+      required idDocument,
+      required isReset})
       : _seatsQuantity = seatsQuantity,
         _color = color,
         _numbers = numbers,
-        _idDocument = idDocument;
-
+        _idDocument = idDocument,
+        _isReset = isReset;
   @override
   Widget build(BuildContext context) {
     _fillSeats();
@@ -28,7 +29,8 @@ class AirplaneSeats extends StatelessWidget {
   }
 
   void _fillSeats() {
-    var ocuppiedSeats = _numbers.split('|');
+    var ocuppiedSeats = _numbers.toString().split('|');
+    bool isDisabled = false;
     int internalSeatCounter = 3;
     int seatNumber = 1;
     int seatIndex = 0;
@@ -46,10 +48,10 @@ class AirplaneSeats extends StatelessWidget {
         for (var element in ocuppiedSeats) {
           if (element != "") {
             if (int.parse(element) == seatNumber) {
-              _color = Colors.red;
+              isDisabled = true;
               break;
             } else {
-              _color = Colors.green;
+              isDisabled = false;
             }
           } else {
             continue;
@@ -60,10 +62,12 @@ class AirplaneSeats extends StatelessWidget {
       }
 
       currentSeatRow.add(Seat(
-          number: seatNumber,
-          color: _color,
-          idDocument: _idDocument,
-          numbers: _numbers));
+        number: seatNumber,
+        idDocument: _idDocument,
+        numbers: _numbers,
+        isDisabled: isDisabled,
+        isReset: _isReset,
+      ));
 
       if (internalSeatCounter - 3 == seatIndex ||
           seatNumber == _seatsQuantity) {

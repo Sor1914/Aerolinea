@@ -27,6 +27,8 @@ class UpdRegister extends AvionEvent {
   String toString() => 'ModifyRegisterPressed';
 }
 
+class updSeats extends AvionEvent {}
+
 class DelRegister extends AvionEvent {
   String toString() => 'DelRegisterPressed';
 }

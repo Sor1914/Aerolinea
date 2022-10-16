@@ -63,4 +63,38 @@ class AvionRepository {
     });
     return response;
   }
+
+  Future<Response> setSeat({required String idDocumento}) async {
+    Response response = Response();
+    DocumentReference documentReferencer = _Collection.doc(idDocumento);
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection("avion")
+        .doc(idDocumento)
+        .get();
+    var listaAsientosTemp = snapshot.data()['listaAsientosTemp'];
+    Map<String, dynamic> data = <String, dynamic>{
+      "listaAsientos": listaAsientosTemp
+    };
+    var result = await documentReferencer.update(data).whenComplete(() {
+      response.code = 200;
+      response.message = "Se agregó correctamente a la base de datos";
+    }).catchError((e) {
+      response.code = 500;
+      response.message = e;
+    });
+    return response;
+  }
+
+  Future<String> getSeat({required String idDocumento}) async {
+    Response response = Response();
+    DocumentReference documentReferencer = _Collection.doc(idDocumento);
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection("avion")
+        .doc(idDocumento)
+        .get();
+    String listaAsientos = snapshot.data()['listaAsientos'];
+    return listaAsientos;
+  }
 }
