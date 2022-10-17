@@ -1,3 +1,4 @@
+import 'package:aerolinea/src/models/seat.dart';
 import 'package:aerolinea/src/ui/tickets/seat.dart';
 import 'package:flutter/material.dart';
 
@@ -5,21 +6,21 @@ class AirplaneSeats extends StatelessWidget {
   final int _seatsQuantity;
   final List<Widget> columnChildren = [];
   Color _color;
-  var _numbers;
   final String _idDocument;
   final bool _isReset;
+  final Seato _seat;
   AirplaneSeats(
       {super.key,
       required int seatsQuantity,
       required color,
-      required numbers,
       required idDocument,
-      required isReset})
+      required isReset,
+      required seat})
       : _seatsQuantity = seatsQuantity,
         _color = color,
-        _numbers = numbers,
         _idDocument = idDocument,
-        _isReset = isReset;
+        _isReset = isReset,
+        _seat = seat;
   @override
   Widget build(BuildContext context) {
     _fillSeats();
@@ -29,7 +30,7 @@ class AirplaneSeats extends StatelessWidget {
   }
 
   void _fillSeats() {
-    var ocuppiedSeats = _numbers.toString().split('|');
+    var ocuppiedSeats = _seat.seleccionados.toString().split('|');
     bool isDisabled = false;
     int internalSeatCounter = 3;
     int seatNumber = 1;
@@ -44,29 +45,27 @@ class AirplaneSeats extends StatelessWidget {
         internalSeatCounter += 5;
         continue;
       }
-      if (ocuppiedSeats.isNotEmpty) {
-        for (var element in ocuppiedSeats) {
-          if (element != "") {
-            if (int.parse(element) == seatNumber) {
-              isDisabled = true;
-              break;
-            } else {
-              isDisabled = false;
-            }
-          } else {
-            continue;
-          }
-        }
-      } else {
-        _color = Colors.green;
-      }
+      //   if (ocuppiedSeats.isNotEmpty) {
+      //     for (var element in ocuppiedSeats) {
+      //      if (element != "") {
+      //         if (int.parse(element) == seatNumber) {
+      //          isDisabled = true;
+      //         break;
+      //         } else {
+      //           isDisabled = false;
+      //        }
+      //      }
+      //    }
+      //   } else {
+      //    isDisabled = false;
+      //   }
 
       currentSeatRow.add(Seat(
         number: seatNumber,
         idDocument: _idDocument,
-        numbers: _numbers,
         isDisabled: isDisabled,
         isReset: _isReset,
+        seat: _seat,
       ));
 
       if (internalSeatCounter - 3 == seatIndex ||

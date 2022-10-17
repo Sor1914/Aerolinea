@@ -33,7 +33,7 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
       update, Emitter<AvionState> emit, Avion avion, String idDocumento) async {
     emit(AvionState.loading());
     try {
-      _repository.updAvion(avion: avion, idDocumento: idDocumento);
+      _repository.updSeatTemporal(avion: avion, idDocumento: idDocumento);
       emit(AvionState.success());
     } catch (_) {
       emit(AvionState.failure());

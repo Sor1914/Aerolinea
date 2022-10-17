@@ -3,69 +3,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../models/avion.dart';
+import '../../models/seat.dart';
 import '../../repository/avion_repository.dart';
 
 class Seat extends StatefulWidget {
   final int _number;
-  final String _numbers;
   final String _idDocument;
   final bool _isDisabled;
   final bool _isReset;
+  final Seato _seat;
   const Seat(
       {Key? key,
       required int number,
-      required numbers,
       required idDocument,
       required isDisabled,
-      required isReset})
+      required isReset,
+      required seat})
       : _number = number,
-        _numbers = numbers,
         _idDocument = idDocument,
         _isDisabled = isDisabled,
         _isReset = isReset,
+        _seat = seat,
         super(key: key);
   @override
   State<Seat> createState() => _SeatState(
-      idDocument: _idDocument,
-      number: _number,
-      numbers: _numbers,
-      isDisabled: _isDisabled,
-      isReset: _isReset);
+        idDocument: _idDocument,
+        number: _number,
+        isDisabled: _isDisabled,
+        isReset: _isReset,
+        seat: _seat,
+      );
 }
-
-String seleccionados = '';
-int contador = 0;
 
 class _SeatState extends State<Seat> {
   final int _number;
-  final String _numbers;
   final String _idDocument;
   Color color = Colors.green;
   final bool _isDisabled;
   final bool _isReset;
+  final Seato _seat;
   _SeatState(
       {Key? key,
       required int number,
-      required numbers,
       required idDocument,
       required isReset,
-      required isDisabled})
+      required isDisabled,
+      required seat})
       : _number = number,
-        _numbers = numbers,
         _idDocument = idDocument,
         _isReset = isReset,
         _isDisabled = isDisabled,
+        _seat = seat,
         super();
 
   AvionRepository _repository = AvionRepository();
 
   @override
   Widget build(BuildContext context) {
-    if (_isReset) {
-      seleccionados = '';
-    } else {
-      contador = 0;
-    }
     return SizedBox.fromSize(
       size: const Size(70, 70),
       child: Container(
@@ -79,18 +73,20 @@ class _SeatState extends State<Seat> {
                     Scaffold.of(context).hideCurrentSnackBar();
                     if (color == Colors.red) {
                       color = Colors.green;
-                      seleccionados = seleccionados.replaceAll("|$_number", "");
-                      contador -= 1;
+                      _seat.seleccionados =
+                          _seat.seleccionados.replaceAll("|$_number", "");
+                      _seat.contador -= 1;
                     } else {
                       color = Colors.red;
-                      seleccionados += '|$_number';
-                      contador += 1;
+                      _seat.seleccionados += '|$_number';
+                      _seat.contador += 1;
                     }
-                    final snackBar =
-                        SnackBar(content: Text('seleccionados: $contador'));
+
+                    final snackBar = SnackBar(
+                        content: Text('seleccionados: ${_seat.seleccionados}'));
                     Scaffold.of(context).showSnackBar(snackBar);
-                    Avion avion = Avion(listaAsientosTemp: seleccionados);
-                    _repository.updAvion(
+                    Avion avion = Avion(listaAsientosTemp: _seat.seleccionados);
+                    _repository.updSeatTemporal(
                         avion: avion, idDocumento: _idDocument);
                   });
                   //  Avion avion = Avion(listaAsientos: _numbers + '|' + _number.toString());

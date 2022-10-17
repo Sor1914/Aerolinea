@@ -5,6 +5,7 @@ import 'package:aerolinea/src/Assets/Notificaciones.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../models/seat.dart';
 import '../AgregarAvion.dart';
 import 'airplane_seats.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -78,6 +79,8 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
   var items;
   var asientos;
   var idDocument;
+  Seato seat = Seato(contador: 0, seleccionados: '', seleccionadosTemp: '');
+
   String occupiedSeat = "";
   bool isReset = false;
   List<DropdownMenuItem> currencyItems = [];
@@ -170,7 +173,7 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                               _repository
                                   .getSeat(idDocumento: idDocument)
                                   .then((value) {
-                                occupiedSeat = value;
+                                seat.seleccionados = value;
                               });
                             });
                           },
@@ -181,9 +184,9 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                         AirplaneSeats(
                             seatsQuantity: asientos ?? 0,
                             idDocument: idDocument ?? '',
-                            numbers: occupiedSeat,
                             color: Colors.green,
-                            isReset: isReset),
+                            isReset: isReset,
+                            seat: seat),
                       ],
                     );
                   }),
@@ -192,8 +195,7 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
             )),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _repository.setSeat(idDocumento: idDocument);
-            isReset = true;
+            _repository.updSeat(idDocumento: idDocument);
           },
           child: const Icon(Icons.add),
         ),

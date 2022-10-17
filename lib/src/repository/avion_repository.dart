@@ -45,13 +45,19 @@ class AvionRepository {
     return _Collection.snapshots();
   }
 
-  Future<Response> updAvion(
+  Future<Response> updSeatTemporal(
       {required Avion avion, required String idDocumento}) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("avion")
+        .doc(idDocumento)
+        .get();
+    var listaAsientos = snapshot.data()['listaAsientos'];
+
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc(idDocumento);
     Map<String, dynamic> data = <String, dynamic>{
-      "listaAsientosTemp": avion.listaAsientosTemp,
-      "listaAsientos": avion.listaAsientos,
+      "listaAsientosTemp": listaAsientos + avion.listaAsientosTemp,
+      //"listaAsientos": avion.listaAsientos,
     };
 
     var result = await documentReferencer.update(data).whenComplete(() {
@@ -64,7 +70,7 @@ class AvionRepository {
     return response;
   }
 
-  Future<Response> setSeat({required String idDocumento}) async {
+  Future<Response> updSeat({required String idDocumento}) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc(idDocumento);
 
