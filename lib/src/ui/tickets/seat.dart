@@ -60,13 +60,17 @@ class _SeatState extends State<Seat> {
 
   @override
   Widget build(BuildContext context) {
+    _repository.getSeat(idDocumento: _idDocument).then((value) {
+      _seat.seleccionados = value;
+    });
+    var seleccion = _seat.seleccionados.split('|');
     return SizedBox.fromSize(
       size: const Size(70, 70),
       child: Container(
         child: ElevatedButton(
           style:
               ElevatedButton.styleFrom(primary: color, onPrimary: Colors.white),
-          onPressed: _isDisabled
+          onPressed: _number == 1
               ? null
               : () {
                   setState(() {
@@ -83,7 +87,7 @@ class _SeatState extends State<Seat> {
                     }
 
                     final snackBar = SnackBar(
-                        content: Text('seleccionados: ${_seat.seleccionados}'));
+                        content: Text('seleccionados: ${_seat.contador}'));
                     Scaffold.of(context).showSnackBar(snackBar);
                     Avion avion = Avion(listaAsientosTemp: _seat.seleccionados);
                     _repository.updSeatTemporal(

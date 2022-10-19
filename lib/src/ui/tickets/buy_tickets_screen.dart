@@ -155,7 +155,7 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                           decoration: const InputDecoration(labelText: 'Avión'),
                           value: selectedCurrency,
                           items: currencyItems,
-                          onChanged: (currencyValue) {
+                          onChanged: (currencyValue) async {
                             AvionState.success();
                             setState(() {
                               selectedCurrency = currencyValue;
@@ -167,14 +167,6 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                                 asientos = 0;
                                 idDocument = '';
                               }
-                              /* occupiedSeat = _repository
-                                  .getSeat(idDocumento: idDocument)
-                                  .then((value) => null);*/
-                              _repository
-                                  .getSeat(idDocumento: idDocument)
-                                  .then((value) {
-                                seat.seleccionados = value;
-                              });
                             });
                           },
                         ),

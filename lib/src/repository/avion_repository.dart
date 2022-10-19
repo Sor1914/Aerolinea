@@ -100,7 +100,7 @@ class AvionRepository {
         .collection("avion")
         .doc(idDocumento)
         .get();
-    String listaAsientos = snapshot.data()['listaAsientos'];
+    String listaAsientos = await snapshot.data()['listaAsientos'];
     return listaAsientos;
   }
 }

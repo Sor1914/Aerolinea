@@ -45,20 +45,20 @@ class AirplaneSeats extends StatelessWidget {
         internalSeatCounter += 5;
         continue;
       }
-      //   if (ocuppiedSeats.isNotEmpty) {
-      //     for (var element in ocuppiedSeats) {
-      //      if (element != "") {
-      //         if (int.parse(element) == seatNumber) {
-      //          isDisabled = true;
-      //         break;
-      //         } else {
-      //           isDisabled = false;
-      //        }
-      //      }
-      //    }
-      //   } else {
-      //    isDisabled = false;
-      //   }
+      if (ocuppiedSeats.isNotEmpty) {
+        for (var element in ocuppiedSeats) {
+          if (element != "") {
+            if (int.parse(element) == seatNumber) {
+              isDisabled = true;
+              break;
+            } else {
+              isDisabled = false;
+            }
+          }
+        }
+      } else {
+        isDisabled = false;
+      }
 
       currentSeatRow.add(Seat(
         number: seatNumber,
