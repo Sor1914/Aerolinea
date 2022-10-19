@@ -7,20 +7,22 @@ class AvionState {
   final bool isSuccess;
   final bool isFailure;
   final bool isValidEmail;
+  final bool isReserved;
 
-  AvionState({
-    required this.isSubmitting,
-    required this.isSuccess,
-    required this.isFailure,
-    required this.isValidEmail,
-  });
+  AvionState(
+      {required this.isSubmitting,
+      required this.isSuccess,
+      required this.isFailure,
+      required this.isValidEmail,
+      required this.isReserved});
 
   factory AvionState.empty() {
     return AvionState(
         isSubmitting: false,
         isSuccess: false,
         isFailure: false,
-        isValidEmail: true);
+        isValidEmail: true,
+        isReserved: false);
   }
 
   factory AvionState.loading() {
@@ -28,7 +30,8 @@ class AvionState {
         isSubmitting: true,
         isSuccess: false,
         isFailure: false,
-        isValidEmail: true);
+        isValidEmail: true,
+        isReserved: false);
   }
 
   factory AvionState.failure() {
@@ -36,7 +39,8 @@ class AvionState {
         isSubmitting: false,
         isSuccess: false,
         isFailure: true,
-        isValidEmail: true);
+        isValidEmail: true,
+        isReserved: false);
   }
 
   factory AvionState.success() {
@@ -44,32 +48,44 @@ class AvionState {
         isSubmitting: false,
         isSuccess: true,
         isFailure: false,
-        isValidEmail: true);
+        isValidEmail: true,
+        isReserved: false);
   }
 
-  AvionState copyWith({
-    bool? isSubmitting,
-    bool? isSuccess,
-    bool? isFailure,
-    bool? isValidEmail,
-  }) {
+  factory AvionState.change() {
     return AvionState(
-      isSubmitting: isSubmitting ?? this.isSubmitting,
-      isSuccess: isSuccess ?? this.isSuccess,
-      isFailure: isFailure ?? this.isFailure,
-      isValidEmail: isValidEmail ?? this.isValidEmail,
-    );
+        isSubmitting: false,
+        isSuccess: false,
+        isFailure: false,
+        isValidEmail: false,
+        isReserved: false);
+  }
+
+  AvionState copyWith(
+      {bool? isSubmitting,
+      bool? isSuccess,
+      bool? isFailure,
+      bool? isValidEmail,
+      bool? isReserved}) {
+    return AvionState(
+        isSubmitting: isSubmitting ?? this.isSubmitting,
+        isSuccess: isSuccess ?? this.isSuccess,
+        isFailure: isFailure ?? this.isFailure,
+        isValidEmail: isValidEmail ?? this.isValidEmail,
+        isReserved: isReserved ?? this.isReserved);
   }
 
   AvionState update(
       {bool? isSubmitting,
       bool? isSuccess,
       bool? isFailure,
-      bool? isValidEmail}) {
+      bool? isValidEmail,
+      bool? isReserved}) {
     return copyWith(
         isFailure: isFailure,
         isSuccess: isSuccess,
         isSubmitting: isSubmitting,
-        isValidEmail: isValidEmail);
+        isValidEmail: isValidEmail,
+        isReserved: isReserved);
   }
 }

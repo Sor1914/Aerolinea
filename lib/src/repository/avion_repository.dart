@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aerolinea/src/models/reponse.dart';
 import 'package:aerolinea/src/models/avion.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/aerolinea.dart';
+import '../models/seat.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _Collection = _firestore.collection('avion');
@@ -92,15 +95,12 @@ class AvionRepository {
     return response;
   }
 
-  Future<String> getSeat({required String idDocumento}) async {
-    Response response = Response();
-    DocumentReference documentReferencer = _Collection.doc(idDocumento);
-
+  Future<void> getSeat({required Seato seat}) async {
     final snapshot = await FirebaseFirestore.instance
         .collection("avion")
-        .doc(idDocumento)
+        .doc(seat.idDocumento)
         .get();
-    String listaAsientos = await snapshot.data()['listaAsientos'];
-    return listaAsientos;
+
+    seat.seleccionados = snapshot.data()['listaAsientos'];
   }
 }

@@ -3,6 +3,8 @@
 import 'package:aerolinea/src/models/avion.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../models/seat.dart';
+
 class AvionEvent extends Equatable {
   const AvionEvent();
   @override
@@ -42,4 +44,14 @@ class EmailChanged extends AvionEvent {
   List<Object> get props => [email];
   @override
   String toString() => 'EmailChanged {email: $email}';
+}
+
+class AvionChange extends AvionEvent {
+  final Seato seat;
+  final String idDocumento;
+
+  const AvionChange({required this.seat, required this.idDocumento});
+
+  @override
+  String toString() => 'Seats {seats: ${seat.seleccionados}}';
 }

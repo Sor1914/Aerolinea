@@ -42,6 +42,7 @@ class _SeatState extends State<Seat> {
   final bool _isDisabled;
   final bool _isReset;
   final Seato _seat;
+  bool prueba = false;
   _SeatState(
       {Key? key,
       required int number,
@@ -60,9 +61,22 @@ class _SeatState extends State<Seat> {
 
   @override
   Widget build(BuildContext context) {
-    _repository.getSeat(idDocumento: _idDocument).then((value) {
-      _seat.seleccionados = value;
-    });
+    prueba = false;
+    var ocuppiedSeats = _seat.seleccionados.toString().split('|');
+    if (ocuppiedSeats.isNotEmpty) {
+      for (var element in ocuppiedSeats) {
+        if (element != "") {
+          if (int.parse(element) == _number) {
+            prueba = true;
+            break;
+          } else {
+            prueba = false;
+          }
+        }
+      }
+    } else {
+      prueba = false;
+    }
     var seleccion = _seat.seleccionados.split('|');
     return SizedBox.fromSize(
       size: const Size(70, 70),
@@ -70,7 +84,7 @@ class _SeatState extends State<Seat> {
         child: ElevatedButton(
           style:
               ElevatedButton.styleFrom(primary: color, onPrimary: Colors.white),
-          onPressed: _number == 1
+          onPressed: prueba
               ? null
               : () {
                   setState(() {
@@ -78,11 +92,11 @@ class _SeatState extends State<Seat> {
                     if (color == Colors.red) {
                       color = Colors.green;
                       _seat.seleccionados =
-                          _seat.seleccionados.replaceAll("|$_number", "");
+                          _seat.seleccionadosTemp.replaceAll("|$_number", "");
                       _seat.contador -= 1;
                     } else {
                       color = Colors.red;
-                      _seat.seleccionados += '|$_number';
+                      _seat.seleccionadosTemp += '|$_number';
                       _seat.contador += 1;
                     }
 
@@ -91,7 +105,7 @@ class _SeatState extends State<Seat> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     Avion avion = Avion(listaAsientosTemp: _seat.seleccionados);
                     _repository.updSeatTemporal(
-                        avion: avion, idDocumento: _idDocument);
+                        avion: avion, idDocumento: _seat.idDocumento);
                   });
                   //  Avion avion = Avion(listaAsientos: _numbers + '|' + _number.toString());
                   //_repository.updAvion(avion: avion, idDocumento: _idDocument);

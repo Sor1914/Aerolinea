@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:aerolinea/src/repository/avion_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../models/avion.dart';
+import '../../models/seat.dart';
 
 class AvionBloc extends Bloc<AvionEvent, AvionState> {
   final AvionRepository _repository;
@@ -16,6 +17,11 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
     on<EmailChanged>((event, emit) => {});
     on<UpdRegister>((event, emit) =>
         {_updateAvion(event, emit, event.avion, event.idDocumento)});
+    on<AvionChange>((event, emit) async {
+      await _updSeat(event, emit, event.idDocumento, event.seat)
+          .whenComplete(() => emit(AvionState.change()));
+      //emit(AvionState.change());
+    });
   }
 
   Future<void> _createAvion(
@@ -31,22 +37,21 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
 
   Future<void> _updateAvion(
       update, Emitter<AvionState> emit, Avion avion, String idDocumento) async {
-    emit(AvionState.loading());
     try {
-      _repository.updSeatTemporal(avion: avion, idDocumento: idDocumento);
-      emit(AvionState.success());
+      _repository
+          .updSeatTemporal(avion: avion, idDocumento: idDocumento)
+          .whenComplete(() => emit(AvionState.success()));
     } catch (_) {
       emit(AvionState.failure());
     }
   }
 
-  Future<void> _emailChanged(
-      emailChanged, Emitter<AvionState> emit, String email) async {
-    emit(state.update(isValidEmail: Validators.isValidEmail(email)));
-  }
-
-  Future<String> _listItems(Emitter<AvionState> emit, String email) async {
-    emit(state.update(isValidEmail: Validators.isValidEmail(email)));
-    return "";
+  Future<void> _updSeat(AvionEvent updates, Emitter<AvionState> emit,
+      String idDocumento, Seato seat) async {
+    try {
+      await _repository.getSeat(seat: seat);
+    } catch (_) {
+      emit(AvionState.empty());
+    }
   }
 }
