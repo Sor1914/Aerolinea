@@ -91,7 +91,7 @@ class _SeatState extends State<Seat> {
                     Scaffold.of(context).hideCurrentSnackBar();
                     if (color == Colors.red) {
                       color = Colors.green;
-                      _seat.seleccionados =
+                      _seat.seleccionadosTemp =
                           _seat.seleccionadosTemp.replaceAll("|$_number", "");
                       _seat.contador -= 1;
                     } else {
@@ -103,7 +103,8 @@ class _SeatState extends State<Seat> {
                     final snackBar = SnackBar(
                         content: Text('seleccionados: ${_seat.contador}'));
                     Scaffold.of(context).showSnackBar(snackBar);
-                    Avion avion = Avion(listaAsientosTemp: _seat.seleccionados);
+                    Avion avion =
+                        Avion(listaAsientosTemp: _seat.seleccionadosTemp);
                     _repository.updSeatTemporal(
                         avion: avion, idDocumento: _seat.idDocumento);
                   });

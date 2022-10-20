@@ -204,7 +204,7 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
                     )),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    _repository.updSeat(idDocumento: seat.idDocumento);
+                    _onSave();
                   },
                   child: const Icon(Icons.add),
                 ),
@@ -219,6 +219,12 @@ class _BuyTicketFormState extends State<BuyTicketForm> {
     txtCorreo.clear();
     txtTelefono.clear();
     txtCodigo.clear();
+  }
+
+  void _onSave() {
+    DateTime now = DateTime.now();
+
+    _AvionBloc.add(SaveTicket(idDocumento: '', seat: seat));
   }
 
   void _onItemTapped(int index) {

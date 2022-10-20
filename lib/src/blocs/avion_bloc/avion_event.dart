@@ -55,3 +55,13 @@ class AvionChange extends AvionEvent {
   @override
   String toString() => 'Seats {seats: ${seat.seleccionados}}';
 }
+
+class SaveTicket extends AvionEvent {
+  final Seato seat;
+  final String idDocumento;
+
+  const SaveTicket({required this.seat, required this.idDocumento});
+
+  @override
+  String toString() => 'Seats {seats: ${seat.seleccionados}}';
+}

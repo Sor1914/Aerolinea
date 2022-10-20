@@ -22,6 +22,8 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
           .whenComplete(() => emit(AvionState.change()));
       //emit(AvionState.change());
     });
+    on<SaveTicket>((event, emit) =>
+        {_saveTicket(event, emit, event.idDocumento, event.seat)});
   }
 
   Future<void> _createAvion(
@@ -50,6 +52,17 @@ class AvionBloc extends Bloc<AvionEvent, AvionState> {
       String idDocumento, Seato seat) async {
     try {
       await _repository.getSeat(seat: seat);
+    } catch (_) {
+      emit(AvionState.empty());
+    }
+  }
+
+  Future<void> _saveTicket(AvionEvent updates, Emitter<AvionState> emit,
+      String idDocumento, Seato seat) async {
+    emit(AvionState.loading());
+    try {
+      _repository.updSeat(idDocumento: seat.idDocumento);
+      emit(AvionState.success());
     } catch (_) {
       emit(AvionState.empty());
     }
